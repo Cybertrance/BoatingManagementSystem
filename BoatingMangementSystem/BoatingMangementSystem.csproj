@@ -16,7 +16,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>C:\Users\Administrator\Desktop\BMS Builds\BMS Setup v1_0_0_17\</PublishUrl>
+    <PublishUrl>C:\Personal Projects\BoatingManagementSystem-Release\BMS Setup v1_0_0_18\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -28,7 +28,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Boating Ticketing System</ProductName>
     <PublisherName>Daniel Misquitta</PublisherName>
-    <ApplicationRevision>18</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -121,6 +121,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportsView.cs" />
     <Compile Include="TicketPrintScreenView.cs" />
+    <Compile Include="TicketSettingsView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
