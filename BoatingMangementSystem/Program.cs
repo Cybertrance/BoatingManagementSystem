@@ -37,7 +37,7 @@ namespace BoatingMangementSystem
 
 
                         sql = "insert into tickets (ticketnumber, tickettype, adultcount, childcount, date, totalamount) values " +
-                        "('" + "26419" + "', '" + "--" + "', " + "0" + ", " + "0" + ", '" + "--" + "', " + "0" + ")";
+                        "('" + "99" + "', '" + "--" + "', " + "0" + ", " + "0" + ", '" + "--" + "', " + "0" + ")";
                         command = new SQLiteCommand(sql, dbConnection);
 
                         if (command.ExecuteNonQuery() < 1)
