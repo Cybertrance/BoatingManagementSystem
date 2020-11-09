@@ -16,7 +16,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>C:\Personal Projects\BoatingManagementSystem-Release\BMS Setup v1_0_0_18\</PublishUrl>
+    <PublishUrl>C:\Personal Projects\BoatingManagementSystem-Release\BMS Setup v1_0_1_1\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -28,8 +28,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Boating Ticketing System</ProductName>
     <PublisherName>Daniel Misquitta</PublisherName>
-    <ApplicationRevision>20</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -119,12 +119,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataGridViewPrinter.cs" />
     <Compile Include="LoginScreenView.cs" />
     <Compile Include="LPrinter.cs" />
     <Compile Include="MainMenuView.cs" />
-    <Compile Include="PrintService.cs" />
+    <Compile Include="TicketPrintService.cs" />
+    <Compile Include="ReportPrintService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportPrintDto.cs" />
     <Compile Include="ReportsView.cs" />
     <Compile Include="TicketPrintScreenView.cs" />
     <Compile Include="TicketSettingsView.cs" />

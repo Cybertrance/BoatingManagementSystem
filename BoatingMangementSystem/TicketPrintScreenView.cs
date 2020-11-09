@@ -37,37 +37,36 @@ namespace BoatingMangementSystem
 
         const int BaseBoatAmountAdult = 30;
         const int BaseBoatAmountChild = 30;
+        const int BaseAmountChild = 20;
         #endregion
 
-        public TicketPrintScreenView() : base ("Chhota Kashmir Boat Club")
+        public TicketPrintScreenView() : base("Chhota Kashmir Boat Club")
         {
             window = new Window(" -- Print Ticket -- ");
             this.Add(window);
 
             // Ticket Type Controls
             lblTicketTypesHeader = new Label("Ticket Types:") { X = 1, Y = 1 };
-            lblTicketTypes = new Label("[B]oat / [T]rain / [M]erry-Go-Round / Moon [W]alker / [K]angaroo / C[a]terpillar / [C]ar") { X = 1, Y = 2};
+            lblTicketTypes = new Label("[B]oat / [T]rain / [M]erry-Go-Round / Moon [W]alker / [K]angaroo / C[a]terpillar / [C]ar") { X = 1, Y = 2 };
 
-            lblTicketSelection = new Label("Ticket Selection : ") { X = 1 , Y = 4 };
-            txtTicketSelection = new TextField("") { X = 20, Y = 4 , Width = 2};
-            lblTicketSelectionDisplay = new Label("") { X = 23, Y = 4};
+            lblTicketSelection = new Label("Ticket Selection : ") { X = 1, Y = 4 };
+            txtTicketSelection = new TextField("") { X = 20, Y = 4, Width = 2 };
+            lblTicketSelectionDisplay = new Label("") { X = 23, Y = 4 };
 
-
-            ticketTypeView = new FrameView("Ticket Type") { X = 1, Y = 1, Height = 8, Width = Dim.Width(this) - 5};
+            ticketTypeView = new FrameView("Ticket Type") { X = 1, Y = 1, Height = 8, Width = Dim.Width(this) - 5 };
             ticketTypeView.Add(lblTicketTypesHeader, lblTicketTypes, lblTicketSelection, txtTicketSelection, lblTicketSelectionDisplay);
 
             // Ticket Details Controls
-            lblAdultCount = new Label("No. of Adults : ") {Y = 1};
+            lblAdultCount = new Label("No. of Adults : ") { Y = 1 };
             txtAdultCount = new TextField("") { X = 18, Y = 1, Width = 3 };
             lblChildCount = new Label("No. of Children : ") { Y = 3 };
             txtChildCount = new TextField("") { X = 18, Y = 3, Width = 3 };
             lblTotal = new Label("Total Bill Amount : ") { Y = 6 };
-            txtTotal = new Label("") { X = 20, Y = 6, Width = 5};
-            ticketDetailsView = new FrameView("Ticket Details") { X = 1, Y = 11 , Width = Dim.Width(this) - 5 , Height = 10};
+            txtTotal = new Label("") { X = 20, Y = 6, Width = 5 };
+            ticketDetailsView = new FrameView("Ticket Details") { X = 1, Y = 11, Width = Dim.Width(this) - 5, Height = 10 };
             ticketDetailsView.Add(lblAdultCount, txtAdultCount, lblChildCount, txtChildCount, lblTotal, txtTotal);
 
-
-            btnPrint = new Button("_Print Ticket") { X = 1, Y = 26};
+            btnPrint = new Button("_Print Ticket") { X = 1, Y = 26 };
             btnCancel = new Button("_Cancel") { X = 27, Y = 26 };
             btnBack = new Button("_Back") { X = 18, Y = 26 };
             window.Add(ticketTypeView, ticketDetailsView, btnPrint, btnCancel, btnBack);
@@ -76,7 +75,7 @@ namespace BoatingMangementSystem
             txtTicketSelection.Changed += TxtTicketSelection_Changed;
             txtAdultCount.Changed += TxtAdultCount_Changed;
             txtChildCount.Changed += TxtChildCount_Changed;
-            
+
             btnCancel.Clicked = BtnCancel_Clicked;
             btnBack.Clicked = BtnBack_Clicked;
             btnPrint.Clicked = BtnPrint_Clicked;
@@ -92,7 +91,7 @@ namespace BoatingMangementSystem
             {
                 String type = lblTicketSelectionDisplay.Text.ToString();
                 int ticketId = -1;
-                if ((ticketId = UpdateTable(type,AdultCount,ChildrenCount,TotalAmount)) > 0)
+                if ((ticketId = UpdateTable(type, AdultCount, ChildrenCount, TotalAmount)) > 0)
                 {
                     PrintTicket(ticketId);
                     MessageBox.Query(44, 10, "Success!", "Ticket Printing...", "Ok");
@@ -135,8 +134,7 @@ namespace BoatingMangementSystem
 
         public void PrintTicket(int ticketId)
         {
-            PrintService ps = new PrintService(ticketId, FormatTicketType(lblTicketSelectionDisplay.Text.ToString()), AdultCount, ChildrenCount, TotalAmount);
-
+            TicketPrintService ps = new TicketPrintService(ticketId, FormatTicketType(lblTicketSelectionDisplay.Text.ToString()), AdultCount, ChildrenCount, TotalAmount);
             ps.Print();
         }
 
@@ -247,6 +245,7 @@ namespace BoatingMangementSystem
                     SelectedTicket = ticketSelectionText;
 
                     FocusNext();
+                    txtTotal.Text = CalculateTotalBillAmount().ToString();
                 }
                 else
                 {
@@ -258,8 +257,15 @@ namespace BoatingMangementSystem
         }
 
         private int CalculateTotalBillAmount()
-        {
-            TotalAmount = (AdultCount * BaseBoatAmountAdult) + (ChildrenCount * BaseBoatAmountChild);
+        {            
+            if (SelectedTicket == "B")
+            {
+                TotalAmount = (AdultCount * BaseBoatAmountAdult) + (ChildrenCount * BaseBoatAmountChild);
+            }
+            else
+            {
+                TotalAmount = (AdultCount * BaseBoatAmountAdult) + (ChildrenCount * BaseAmountChild);
+            }
 
             return TotalAmount;
         }

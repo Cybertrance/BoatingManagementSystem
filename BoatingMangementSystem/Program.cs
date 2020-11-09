@@ -9,7 +9,7 @@ namespace BoatingMangementSystem
         static void Main(string[] args)
         {
             
-            System.Console.SetWindowSize(120, 32);
+            System.Console.SetWindowSize(120, 36);
             System.Console.Title = "Chhota Kashmir Boating Club";
             
             Application.Init();
@@ -37,7 +37,7 @@ namespace BoatingMangementSystem
 
 
                         sql = "insert into tickets (ticketnumber, tickettype, adultcount, childcount, date, totalamount) values " +
-                        "('" + "99" + "', '" + "--" + "', " + "0" + ", " + "0" + ", '" + "--" + "', " + "0" + ")";
+                        "('" + "0" + "', '" + "--" + "', " + "0" + ", " + "0" + ", '" + "--" + "', " + "0" + ")";
                         command = new SQLiteCommand(sql, dbConnection);
 
                         if (command.ExecuteNonQuery() < 1)

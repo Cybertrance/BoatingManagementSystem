@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
 using Terminal.Gui;
@@ -13,6 +14,7 @@ namespace BoatingMangementSystem
         TextField txtReportRange;
         Button btnGetReport;
         Button btnBack;
+        Button btnPrintReport;
 
         FrameView vwReportResults;
         FrameView vwReportHeader;
@@ -50,6 +52,12 @@ namespace BoatingMangementSystem
         Label lblcarA;
         Label lblcarC;
         Label lblcarT;
+        Label lblgrandtotalH;
+        Label lblgrandtotalT;
+        #endregion
+
+        #region Properties
+        public bool IsReportPopulated { get; set; }
         #endregion
 
         public ReportsView() : base("Chhota Kashmir Boating Club")
@@ -60,7 +68,12 @@ namespace BoatingMangementSystem
             btnBack = new Button("_Back")
             {
                 X = 1,
-                Y = 26
+                Y = 29
+            };
+            btnPrintReport = new Button("_Print Report")
+            {
+                X = 10,
+                Y = 29
             };
 
             //Init Controls
@@ -86,7 +99,7 @@ namespace BoatingMangementSystem
             {
                 X = 1,
                 Y = 6,
-                Height = 20,
+                Height = 23,
                 Width = Dim.Width(this) - 5
             };
             lblTypeTitle = new Label("Type")
@@ -110,13 +123,11 @@ namespace BoatingMangementSystem
                 Y = 1,
                 X = 28
             };
-            
-
 
             vwReportResults = new FrameView("")
             {
                 Y = 2,
-                Height = 16,
+                Height = 19,
                 Width = Dim.Width(this) - 7
             };
 
@@ -287,6 +298,17 @@ namespace BoatingMangementSystem
                 Y = 13,
                 Width = 3
             };
+            lblgrandtotalH = new Label("Grand Total")
+            {
+                X = 1,
+                Y = 15
+            };
+            lblgrandtotalT = new Label("----")
+            {
+                X = 25,
+                Y = 15,
+                Width = 6
+            };
 
             vwReportResults.Add(lblboatH, lblboatA, lblboatC, lblboatT,
                 lbltrainH,lbltrainA, lbltrainC, lbltrainT,
@@ -294,11 +316,12 @@ namespace BoatingMangementSystem
                 lblmwalkH, lblmwalkA, lblmwalkC, lblmwalkT,
                 lblkangarooH, lblkangarooA, lblkangarooC, lblkangarooT,
                 lblcaterpH, lblcaterpA, lblcaterpC, lblcaterpT,
-                lblcarH, lblcarA, lblcarC, lblcarT);
+                lblcarH, lblcarA, lblcarC, lblcarT, 
+                lblgrandtotalH, lblgrandtotalT);
 
             vwReportHeader.Add(lblTypeTitle, lblAdultCountTitle, lblChildCountTitle, lblTotalTitle, vwReportResults);
 
-            window.Add(lblReportRange, txtReportRange, btnGetReport, btnBack, vwReportHeader);
+            window.Add(lblReportRange, txtReportRange, btnGetReport, btnBack, btnPrintReport, vwReportHeader);
 
             //Link Event Handlers
             txtReportRange.Changed += TxtReportRange_Changed;
@@ -330,10 +353,10 @@ namespace BoatingMangementSystem
                     int adultCount = 0;
                     int childCount = 0;
                     int totalAmount = 0;
+                    int grandTotal = 0;
 
                     string formattedDate = FormatDateString(txtReportRange.Text.ToString());
 
-                    
                     vwReportHeader.Title = "Reports for " + txtReportRange.Text.ToString();
                     
                     // Update Boat
@@ -341,42 +364,55 @@ namespace BoatingMangementSystem
                     lblboatA.Text = adultCount.ToString();
                     lblboatC.Text = childCount.ToString();
                     lblboatT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Train
                     GetReportData(formattedDate, "Train", out adultCount, out childCount, out totalAmount);
                     lbltrainA.Text = adultCount.ToString();
                     lbltrainC.Text = childCount.ToString();
                     lbltrainT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Merry-Go-Round
                     GetReportData(formattedDate, "Merry-Go-Round", out adultCount, out childCount, out totalAmount);
                     lblmgrA.Text = adultCount.ToString();
                     lblmgrC.Text = childCount.ToString();
                     lblmgrT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Moon Walker
                     GetReportData(formattedDate, "Moon Walker", out adultCount, out childCount, out totalAmount);
                     lblmwalkA.Text = adultCount.ToString();
                     lblmwalkC.Text = childCount.ToString();
                     lblmwalkT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Kangaroo
                     GetReportData(formattedDate, "Kangaroo", out adultCount, out childCount, out totalAmount);
                     lblkangarooA.Text = adultCount.ToString();
                     lblkangarooC.Text = childCount.ToString();
                     lblkangarooT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Caterpillar
                     GetReportData(formattedDate, "Caterpillar", out adultCount, out childCount, out totalAmount);
                     lblcaterpA.Text = adultCount.ToString();
                     lblcaterpC.Text = childCount.ToString();
                     lblcaterpT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
 
                     // Update Car
                     GetReportData(formattedDate, "Car", out adultCount, out childCount, out totalAmount);
                     lblcarA.Text = adultCount.ToString();
                     lblcarC.Text = childCount.ToString();
                     lblcarT.Text = totalAmount.ToString();
+                    grandTotal += totalAmount;
+
+                    // Update Grand Total
+                    lblgrandtotalT.Text = grandTotal.ToString();
+
+                    // Update State 
+                    IsReportPopulated = true;
                 }
                 else
                 {
@@ -384,6 +420,25 @@ namespace BoatingMangementSystem
                     FocusPrev();
                 }
             };
+            btnPrintReport.Clicked = () =>
+            {
+                if (IsReportPopulated)
+                {
+                    ReportPrintService ps = new ReportPrintService(PopulatePrintData(), txtReportRange.Text.ToString());
+                    if (ps.SetupPrinter())
+                    {
+                        MessageBox.Query(44, 10, "Success!", "Report Printing...", "Ok");
+                        ps.PrintDocument.Print();
+                    }
+                }
+                else
+                {
+                    MessageBox.ErrorQuery(44, 10, "Error!", "Input Report Date", "Ok");
+                }
+            };
+
+            //Initialize Page state
+            IsReportPopulated = false;
         }
 
         private void TxtReportRange_Changed(object sender, EventArgs e)
@@ -480,6 +535,69 @@ namespace BoatingMangementSystem
             string year = date.Substring(6, 4);
 
             return formattedString = year + "-" + month + "-" + day;
+        }
+
+        private List<ReportPrintDto> PopulatePrintData()
+        {
+            List<ReportPrintDto> reportData = new List<ReportPrintDto>();
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblboatH.Text.ToString(),
+                AdultCount = lblboatA.Text.ToString(),
+                ChildCount = lblboatC.Text.ToString(),
+                Total = lblboatT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lbltrainH.Text.ToString(),
+                AdultCount = lbltrainA.Text.ToString(),
+                ChildCount = lbltrainC.Text.ToString(),
+                Total = lbltrainT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblmgrH.Text.ToString(),
+                AdultCount = lblmgrA.Text.ToString(),
+                ChildCount = lblmgrC.Text.ToString(),
+                Total = lblmgrT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblmwalkH.Text.ToString(),
+                AdultCount = lblmwalkA.Text.ToString(),
+                ChildCount = lblmwalkC.Text.ToString(),
+                Total = lblmwalkT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblcaterpH.Text.ToString(),
+                AdultCount = lblcaterpA.Text.ToString(),
+                ChildCount = lblcaterpC.Text.ToString(),
+                Total = lblcaterpT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblcarH.Text.ToString(),
+                AdultCount = lblcarA.Text.ToString(),
+                ChildCount = lblcarC.Text.ToString(),
+                Total = lblcarT.Text.ToString()
+            });
+
+            reportData.Add(new ReportPrintDto
+            {
+                Type = lblgrandtotalH.Text.ToString(),
+                AdultCount = string.Empty,
+                ChildCount = string.Empty,
+                Total = lblgrandtotalT.Text.ToString()
+            });
+
+            return reportData;
         }
     }
 }

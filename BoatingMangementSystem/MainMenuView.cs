@@ -8,8 +8,8 @@ namespace BoatingMangementSystem
         Window window;
         Button btnTicket;
         Button btnReports;
-        Button btnTicketSettings;
-        CheckBox chkSpecialRates;
+        //Button btnTicketSettings;
+        //CheckBox chkSpecialRates;
         Button btnExitApplication;
         #endregion
 
@@ -31,24 +31,24 @@ namespace BoatingMangementSystem
                 Y = 2,
                 Width = 22
             };
-            btnTicketSettings = new Button("[3] Ticket _Settings")
-            {
-                X = 1,
-                Y = 3,
-                Width = 22
-            };
-            chkSpecialRates = new CheckBox("Apply _special Rates for all tickets (holiday/spcecial day)?")
-            {
-                X = 1,
-                Y = 5
-            };
+            //btnTicketSettings = new Button("[3] Ticket _Settings")
+            //{
+            //    X = 1,
+            //    Y = 3,
+            //    Width = 22
+            //};
+            //chkSpecialRates = new CheckBox("Apply _special Rates for all tickets (holiday/spcecial day)?")
+            //{
+            //    X = 1,
+            //    Y = 5
+            //};
             btnExitApplication = new Button("_Exit Application")
             {
                 X = 1,
                 Y = 8
             };
 
-            window.Add(btnTicket, btnReports, btnTicketSettings, chkSpecialRates, btnExitApplication);
+            window.Add(btnTicket, btnReports, btnExitApplication);
 
             // Link Event Handlers
             btnTicket.Clicked = () => {
@@ -93,27 +93,27 @@ namespace BoatingMangementSystem
 
                 Application.Run(reportsLevel);
             };
-            btnTicketSettings.Clicked = () =>
-            {
-                Toplevel ticketSettingsLevel = new Toplevel()
-                {
-                    X = Application.Top.X,
-                    Y = Application.Top.Y,
-                    Height = Dim.Fill(),
-                    Width = Dim.Fill()
-                };
+            //btnTicketSettings.Clicked = () =>
+            //{
+            //    Toplevel ticketSettingsLevel = new Toplevel()
+            //    {
+            //        X = Application.Top.X,
+            //        Y = Application.Top.Y,
+            //        Height = Dim.Fill(),
+            //        Width = Dim.Fill()
+            //    };
 
-                ticketSettingsLevel.Add(new TicketSettingsView());
+            //    ticketSettingsLevel.Add(new TicketSettingsView());
 
-                Application.RequestStop();
+            //    Application.RequestStop();
 
-                Application.Top.RemoveAll();
-                Application.Top.Add(ticketSettingsLevel);
-                Application.Top.FocusFirst();
-                Application.Top.LayoutSubviews();
+            //    Application.Top.RemoveAll();
+            //    Application.Top.Add(ticketSettingsLevel);
+            //    Application.Top.FocusFirst();
+            //    Application.Top.LayoutSubviews();
 
-                Application.Run(ticketSettingsLevel);
-            };
+            //    Application.Run(ticketSettingsLevel);
+            //};
             btnExitApplication.Clicked = () =>
             {
                 if (MessageBox.Query(44, 10, "Exit Application", "Are you sure?", "Yes", "No") == 0)
